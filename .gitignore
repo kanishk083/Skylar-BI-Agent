@@ -37,6 +37,3 @@ data/*.xlsx
 .idea/
 *.iml
 
-# Internal build context — not for public repo
-AGENT_CONTEXT*.md
-MASTER_PROMPT.md
