@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: #FDF8F5;
+  color: #1A0D06;
+}
+
+/* Custom scrollbar — thin, brand-colored */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4A090;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E05A28;
+}
+
+/* Smooth scrollbar for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #C4A090 transparent;
+}
+
+/* Streaming cursor blink */
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: #E05A28;
+  border-radius: 1px;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Message animation */
+.msg-enter {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Sidebar active glow */
+.nav-active {
+  background: linear-gradient(135deg, rgba(224,90,40,0.15), rgba(224,90,40,0.05));
+  border-left: 2px solid #E05A28;
+}
+
+/* Orange gradient button */
+.btn-orange {
+  background: linear-gradient(135deg, #E05A28, #C44E20);
+  transition: all 0.2s ease;
+}
+.btn-orange:hover {
+  background: linear-gradient(135deg, #C44E20, #A84018);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(224,90,40,0.35);
+}
+.btn-orange:active {
+  transform: translateY(0);
+}
+.btn-orange:disabled {
+  opacity: 0.4;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Textarea resize handle hide */
+textarea {
+  resize: none;
+}
+
+/* Prose-style response text */
+.prose-skylark p {
+  margin: 0.5rem 0;
+  line-height: 1.65;
+}
+.prose-skylark ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+  margin: 0.4rem 0;
+}
+.prose-skylark li {
+  margin: 0.25rem 0;
+}
+.prose-skylark strong {
+  color: #1A0D06;
+  font-weight: 600;
+}

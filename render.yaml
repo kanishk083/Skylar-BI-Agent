@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: skylark-bi-agent
+    env: python
+    region: singapore
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: MONDAY_API_TOKEN
+        sync: false
+      - key: MONDAY_DEAL_BOARD_ID
+        sync: false
+      - key: MONDAY_ORDER_BOARD_ID
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.11.0"
