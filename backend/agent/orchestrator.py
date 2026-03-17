@@ -61,18 +61,24 @@ class Orchestrator:
 
         messages: list[dict] = history + [{"role": "user", "content": query}]
 
-        # P6: Planning — Haiku picks which tools to call (Opt 4)
-        try:
-            plan_response = await self._client.chat.completions.create(
-                model=PLANNER_MODEL,
-                max_tokens=1000,
-                messages=[{"role": "system", "content": system}] + messages,
-                tools=TOOL_SCHEMAS,
-                tool_choice="auto",
-            )
-        except Exception as e:
-            yield f"I'm having trouble reaching the AI service. Please retry. ({type(e).__name__})"
-            return
+        # P6: Planning — planner picks which tools to call (Opt 4)
+        # Retry once on transient errors (cold-start / Groq blip)
+        plan_response = None
+        for attempt in range(2):
+            try:
+                plan_response = await self._client.chat.completions.create(
+                    model=PLANNER_MODEL,
+                    max_tokens=1000,
+                    messages=[{"role": "system", "content": system}] + messages,
+                    tools=TOOL_SCHEMAS,
+                    tool_choice="auto",
+                )
+                break
+            except Exception as e:
+                if attempt == 1:
+                    yield f"I'm having trouble reaching the AI service. Please retry. ({type(e).__name__})"
+                    return
+                await asyncio.sleep(1.5)
 
         # P3: Parallelization — execute all planned tool calls simultaneously
         tool_calls = plan_response.choices[0].message.tool_calls or []

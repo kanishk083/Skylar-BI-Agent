@@ -254,7 +254,7 @@ export default function App() {
           </p>
           <div className="space-y-1.5">
             <StatChip label="Pipeline"    value="₹68.82 Cr" trend="+12% MoM" />
-            <StatChip label="At Risk"     value="12 deals"  trend="-2 this week" />
+            <StatChip label="At Risk"     value="43 deals"  />
             <StatChip label="Overdue WOs" value="31 orders" />
           </div>
         </div>
