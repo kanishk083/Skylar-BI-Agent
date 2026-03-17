@@ -89,9 +89,17 @@ All exclusions are reported in `quality_report` which is injected into the LLM p
 
 **Persistent memory**: The current in-memory session store resets on server restart (Render free tier restarts frequently). A v2 would persist sessions to SQLite or Postgres.
 
+**Auth depth**: The current implementation uses a single static API key in the `x-api-key` header. This is sufficient for a single-founder prototype. V2 adds JWT-based authentication with user-scoped Monday.com tokens — each user authenticates with their own Monday.com OAuth token, enabling multi-user access with board-level permissions enforced at the API layer.
+
+**Observability**: All requests emit structured JSON to stdout (`trace_id`, `latency_ms`, `tool_calls`, `confidence`, `guardrail_passed`). This is queryable in any log aggregator. V2 adds a Prometheus metrics endpoint and a Grafana dashboard tracking P95 latency, tool call frequency, guardrail failure rate, and Monday.com API error rate — giving the team a real-time health view without manual log parsing.
+
+**Adaptive Learning (P9)**: The current agent does not learn from usage. V2 logs every failed query (guardrail_passed=false or user retry within 30s) to a Postgres table. A weekly job converts the top 10 failure patterns into few-shot examples injected into the system prompt — progressively improving answer quality on the queries the founder actually asks most.
+
 **V2 Roadmap (priority order)**:
-1. Persistent conversation storage (Postgres/SQLite)
-2. Multi-board support (Sales, Ops, Finance boards unified)
-3. Chart rendering (Recharts inline in responses)
-4. Slack bot integration via Monday.com webhook triggers
-5. Fine-tuned retrieval using historical query logs
+1. JWT auth with user-scoped Monday.com tokens
+2. Prometheus + Grafana P95 observability dashboard
+3. Adaptive learning — failed query logging → weekly few-shot injection
+4. Persistent conversation storage (Postgres/SQLite)
+5. Multi-board support (Sales, Ops, Finance boards unified)
+6. Chart rendering (Recharts inline in responses)
+7. Slack bot integration via Monday.com webhook triggers
