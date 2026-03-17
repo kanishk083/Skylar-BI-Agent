@@ -24,9 +24,13 @@ logging.basicConfig(
 
 app = FastAPI(title="Skylark BI Agent", version="1.0.0")
 
+_frontend_url = os.getenv("FRONTEND_URL", "*")
+_origins = [o.strip() for o in _frontend_url.split(",")] if _frontend_url != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("FRONTEND_URL", "*")],
+    allow_origins=_origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
